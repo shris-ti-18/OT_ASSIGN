@@ -1,14 +1,5 @@
 import numpy as np
 
-cost = np.array([
-    [19, 30, 50, 10],
-    [70, 30, 40, 60],
-    [40,  8, 70, 20]
-], dtype=float)
-
-supply = [7, 9, 18]
-demand = [5, 8, 7, 14]
-
 
 def balance(cost, supply, demand):
     """Add a zero-cost dummy row/column if total supply != total demand."""
@@ -130,7 +121,6 @@ def MODI(cost, alloc):
                     u[i] = cost[i][j] - v[j]
                     changed = True
 
-      
         u = [x if x is not None else 0 for x in u]
         v = [x if x is not None else 0 for x in v]
 
@@ -162,6 +152,22 @@ def MODI(cost, alloc):
 
     return alloc
 
+
+# ---- Read the problem from user input ----
+num_sources = int(input("Enter number of sources: "))
+num_destinations = int(input("Enter number of destinations: "))
+
+print(f"Enter the {num_sources}x{num_destinations} cost matrix, row by row (space separated):")
+cost = np.array([
+    list(map(float, input(f"  Row {i + 1}: ").split()))
+    for i in range(num_sources)
+], dtype=float)
+
+print(f"Enter the {num_sources} supply values (space separated):")
+supply = list(map(float, input().split()))
+
+print(f"Enter the {num_destinations} demand values (space separated):")
+demand = list(map(float, input().split()))
 
 # Run program
 cost_b, supply_b, demand_b = balance(cost, supply, demand)
