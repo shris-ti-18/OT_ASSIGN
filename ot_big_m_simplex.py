@@ -2,19 +2,30 @@ import numpy as np
 
 M = 1000000
 
-# Objective: Max Z = 40x1 + 30x2 - M*A1
+# Objective: Max Z = c1*x1 + c2*x2 - M*A1
 # Variables: x1, x2, s1, s2, s3, A1
 
-c = np.array([40, 30, 0, 0, 0, -M], dtype=float)
+print("Enter objective coefficients (c1 c2) for Max Z = c1*x1 + c2*x2:")
+c1, c2 = map(float, input().split())
+c = np.array([c1, c2, 0, 0, 0, -M], dtype=float)
+
+print("Enter coefficients (a1 a2) and RHS (b1) for constraint 1 (a1*x1 + a2*x2 <= b1):")
+a11, a12, b1 = map(float, input().split())
+
+print("Enter coefficients (a1 a2) and RHS (b2) for constraint 2 (a1*x1 + a2*x2 <= b2):")
+a21, a22, b2 = map(float, input().split())
+
+print("Enter coefficients (a1 a2) and RHS (b3) for constraint 3 (a1*x1 + a2*x2 >= b3):")
+a31, a32, b3 = map(float, input().split())
 
 # Constraint matrix
 A = np.array([
-    [2, 1, 1, 0, 0, 0],
-    [1, 2, 0, 1, 0, 0],
-    [1, 1, 0, 0, -1, 1]
+    [a11, a12, 1, 0, 0, 0],
+    [a21, a22, 0, 1, 0, 0],
+    [a31, a32, 0, 0, -1, 1]
 ], dtype=float)
 
-b = np.array([100, 80, 20], dtype=float)
+b = np.array([b1, b2, b3], dtype=float)
 
 # Initial basic variables
 basis = [2, 3, 5]       # s1, s2, A1
@@ -92,4 +103,4 @@ else:
     print("Optimal Solution:")
     print("x1 =", solution[0])
     print("x2 =", solution[1])
-    print("Maximum Profit =", 40 * solution[0] + 30 * solution[1])
+    print("Maximum Profit =", c1 * solution[0] + c2 * solution[1])
